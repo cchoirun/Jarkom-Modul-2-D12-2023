@@ -8,24 +8,36 @@
 ## 1. Yudhistira akan digunakan sebagai DNS Master, Werkudara sebagai DNS Slave, Arjuna merupakan Load Balancer yang terdiri dari beberapa Web Server yaitu Prabakusuma, Abimanyu, dan Wisanggeni.
 ![Picture1](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/449ed7d9-0aed-425b-b1fa-061bbe053dc8)
 
+Sesuai dengan pembagian yang diberikan, maka kami kelompok D12 mendapatkan topologi no.1 yang dapat dilihat pada gambar. Kemudian untuk dapat mengakses internet maka kita perlu assign IP Address masing-masing switch pada router, sesuai yang ditunjukkan pada gambar.
+
+<img width="593" alt="1 1" src="https://github.com/revelwivanto/Jarkom-Modul-1-D12-2023/assets/115228631/ba2d8e7b-9a74-4ec3-b7f9-2b18b33ba852">
+
+Kita perlu mengkonfigurasikan 3 ethernet sesuai dengan jumlah switch yang ada. Kemudian secara urut kita assign IP Address mulai dari Yudhistira dengan IP 192.197.1.2, kemudian Nakula dengan IP 192.197.1.3. Dengan pola yang sama maka Werkudara dengan IP 192.197.2.2 dan Wisanggeni dengan IP 192.197.3.5
+
 ## 2. Buatlah website utama pada node arjuna dengan akses ke arjuna.yyy.com dengan alias www.arjuna.yyy.com dengan yyy merupakan kode kelompok.
+Untuk pembuatan domain utama, maka pada node arjuna kita jalankan perintah berikut
+`nano \etc\bind\named.conf.local`
+Kemudian kita edit sesuai dengan nama domain yang kita inginkan seperti pada gambar dibawah ini
 ![Picture2](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/9a658541-108e-48a8-8753-52016fbd0c28)
 
+Kemudian kita jalankan `nano \etc\bind\arjuna\arjuna.d12.com` dan ubah sesuai dengan nama domain yang diinginkan
 ![2 2](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/55ab668b-4a1a-48dc-ab40-1ef137cf58aa)
 
+Kemudian kita test untuk mengetahui apakah ketika kita mengakses www.arjuna.d12.com akan mengarah ke arjuna.d12.com
 ![2 3](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/e33145a1-9f90-4a41-a1fd-805f710816fd)
 
 
 
 ## 3. Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
-
-![3 1](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/7aeaaad7-3187-4359-bec7-1d27252fab4b)
+Langkah yang dilakukan mirip dengan nomor 2, kita jalankan perintah `nano \etc\bind\abimanyu\abimanyu.d12.com`
 
 ![3 2](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/74fcc81d-5a78-46f6-8646-1d80e59ebb57)
 
 ![3 3](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/dc63cf35-9985-4aac-b6c0-4b0a261baa1d)
 
 ## 4. Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
+untuk soal nomor 4 maka kita perlu mengatur konfigurasinya pada node Yudhistira, kemudian kita arahkan IPnya kepada Abimanyu
+
 ![4 1](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/1fded3f9-abf9-4da2-aa98-8aa6b216d3c9)
 
 ![4 2](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/e7b2b798-ccbe-473e-8d25-847e1eaf96db)
@@ -35,12 +47,21 @@
 ![4 4](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/20da2d50-1847-46c8-95ba-f543351d7352)
 
 ## 5. Buat juga reverse domain untuk domain utama. (Abimanyu saja yang direverse)
+Untuk mereverse DNS, berarti bertujuan pada saat kita menginputkan nilai IP maka akan mengarahkan kepada nama domain yang sudah kita buat. Untuk itu maka kita perlu menjalankan perintah `nano \etc\bind\named.conf.local` dan memasukkan nilai 3 section IP kita secara terbalik.
+
 ![5 1](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/ea0dd47f-3d3d-412d-b1bd-741c6ad886d1)
+
+Kemudian sama halnya dengan DNS biasa, maka kita perlu juga melakukan pengeditan dengan perintah `nano \etc\bind\abimanyud12\3.197.192.in-addr.arpa`
+
 ![5 2](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/a67cf8dc-8c50-4979-aa55-d1c88527cfc6)
+
+Kemudian dapat dilihat pada gambar dibawah bahwa saat kita memasukkan `host -t PTR 192.197.3.4` maka akan mengarah ke abimanyu.d12.com
+
 ![5 3](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/d1134964-d244-497c-a984-30814ec3e614)
 
 
 ## 6. Agar dapat tetap dihubungi ketika DNS Server Yudhistira bermasalah, buat juga Werkudara sebagai DNS Slave untuk domain utama.
+
 ![6 1](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/966a49ab-a66f-4381-a5f2-b5930af44a90)
 
 ![6 2](https://github.com/cchoirun/Jarkom-Modul-2-D12-2023/assets/115228631/586a47b8-baf7-42ba-be07-de90305b64db)
